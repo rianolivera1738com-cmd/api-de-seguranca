@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+**/target/
+*.db
+*.db-shm
+*.db-wal
+.env
+.env.*
+!.env.example
+.aws/
+.agents/
+.codex/
+__pycache__/
+.dotnet/
+backups/

@@ -1,0 +1,45 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      Jwt__Key: ${JWT_KEY:?Configure JWT_KEY no arquivo .env}
+      Proxy__KnownIp: 172.30.50.2
+    volumes:
+      - api_data:/data
+    networks:
+      backend:
+        ipv4_address: 172.30.50.3
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      DOMAIN: ${DOMAIN:?Configure DOMAIN no arquivo .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      backend:
+        ipv4_address: 172.30.50.2
+
+networks:
+  backend:
+    ipam:
+      config:
+        - subnet: 172.30.50.0/24
+
+volumes:
+  api_data:
+  caddy_data:
+  caddy_config:

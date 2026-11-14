@@ -1,0 +1,15 @@
+.git
+.agents
+.aws
+.codex
+.dotnet
+**/bin
+**/obj
+**/target
+**/__pycache__
+.env
+.env.*
+*.db
+*.db-shm
+*.db-wal
+backups
